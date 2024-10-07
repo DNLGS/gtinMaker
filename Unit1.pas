@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, RxCombos,
-  Vcl.Buttons, Vcl.Samples.Spin, QuickRpt,QRCtrls, qrpBaseCtrls,QRPrntr,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, RxCombos, Vcl.Buttons,
+  Vcl.Samples.Spin, Vcl.ExtCtrls,QuickRpt,QRCtrls, qrpBaseCtrls,QRPrntr,
   pBarcode1D, pCode128, pEAN128, RLReport, RLBarcode,TypInfo,System.Rtti, System.JSON,
   Vcl.ComCtrls;
 
@@ -43,32 +43,25 @@ type
     property OnClick: TNotifyEvent read FOnClick write FOnclick;
   End;
 
-  TForm1 = class(TForm)
-    Panel2: TPanel;
-    SB_Nome: TSpeedButton;
-    Sb_Vista: TSpeedButton;
-    Sb_Prazo: TSpeedButton;
-    SB_Barras: TSpeedButton;
-    SB_CodBarras: TSpeedButton;
-    Panel4: TPanel;
-    Label1: TLabel;
-    Label2: TLabel;
-    CB_Style: TComboBox;
-    Label3: TLabel;
-    Label4: TLabel;
-    CB_Color: TColorComboBox;
-    SP_Font: TSpinEdit;
-    CB_Font: TFontComboBox;
-    SB_CodProd: TSpeedButton;
-    Panel5: TPanel;
-    Label10: TLabel;
-    Label11: TLabel;
+  TGtinMaker = class(TForm)
+    Panel1: TPanel;
+    GroupBox1: TGroupBox;
     Label12: TLabel;
-    Edit_AltPag: TEdit;
-    Edit_LargPag: TEdit;
+    Label11: TLabel;
     Label13: TLabel;
     Label14: TLabel;
-    Panel7: TPanel;
+    Edit_LargPag: TSpinEdit;
+    Edit_AltPag: TSpinEdit;
+    GroupBox2: TGroupBox;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Edit_LargBand: TSpinEdit;
+    Edit_AltBand: TSpinEdit;
+    Label1: TLabel;
+    SpinEdit2: TSpinEdit;
+    GroupBox3: TGroupBox;
     Label15: TLabel;
     sEdit_Top: TSpinEdit;
     Label16: TLabel;
@@ -77,30 +70,67 @@ type
     sEdit_Dir: TSpinEdit;
     Label18: TLabel;
     sEdit_Esq: TSpinEdit;
-    Pn_CodBarra: TPanel;
-    Edit_AltBarra: TEdit;
-    Label20: TLabel;
-    Label21: TLabel;
-    Edit_LarBarra: TEdit;
-    Label22: TLabel;
-    SpeedButton1: TSpeedButton;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
+    Panel4: TPanel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
     Label5: TLabel;
-    Edit_AltBand: TEdit;
-    Edit_LargBand: TEdit;
-    Label19: TLabel;
-    SpinEdit2: TSpinEdit;
+    CB_Style: TComboBox;
+    CB_Color: TColorComboBox;
+    SP_Font: TSpinEdit;
+    CB_Font: TFontComboBox;
     ScrollBox1: TScrollBox;
+    Panel2: TPanel;
     SB_Excluir: TSpeedButton;
-    SB_zoom: TSpeedButton;
-    sb_zoomout: TSpeedButton;
+    GroupBox4: TGroupBox;
+    Label21: TLabel;
+    Edit_LarBarra: TSpinEdit;
+    Label20: TLabel;
+    Edit_AltBarra: TSpinEdit;
+    Pn_CodBarra: TPanel;
+    Label10: TLabel;
+    Edit_Name: TEdit;
+    SB_CodProd: TSpeedButton;
+    SB_Nome: TSpeedButton;
+    Sb_Vista: TSpeedButton;
+    Sb_Prazo: TSpeedButton;
+    SB_Barras: TSpeedButton;
+    SB_CodBarras: TSpeedButton;
+    Sb_Empresa: TSpeedButton;
+    SpeedButton1: TSpeedButton;
+    SB_Criar: TSpeedButton;
+    SB_Preview: TSpeedButton;
+    Shape1: TShape;
+    Label19: TLabel;
+    Edit_Caption: TEdit;
     SpeedButton2: TSpeedButton;
-    SpeedButton3: TSpeedButton;
-    Memo1: TMemo;
-    Edit1: TEdit;
+    procedure FonteChange(Sender : TObject);
+    procedure Edit_LarBarraChange(Sender: TObject);
+    procedure Edit_AltBarraChange(Sender: TObject);
+    procedure AlteraFolha(Sender : TObject);
+    procedure AlteraMargem(Sender :TObject);
+    procedure SB_ExcluirClick(Sender: TObject);
+    procedure AlteraBand(Sender : TObject);
+    procedure SB_CriarClick(Sender: TObject);
+    procedure SB_PreviewClick(Sender: TObject);
+    procedure Edit_NameChange(Sender: TObject);
+    procedure SB_CodProdClick(Sender: TObject);
+    procedure SB_NomeClick(Sender: TObject);
+    procedure Sb_VistaClick(Sender: TObject);
+    procedure Sb_PrazoClick(Sender: TObject);
+    procedure SB_CodBarrasClick(Sender: TObject);
+    procedure Sb_EmpresaClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure Edit_CaptionChange(Sender: TObject);
+    procedure SB_BarrasClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+  private
+    Rep  : TQuickRep;
+    Band : TBand;
+    Shape : TShape;
+    FSelectedControl : TControl;
+    img : TImage;
+    { Private declarations }
     procedure MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure MouseDown(Sender: TObject; Button: TMouseButton;
@@ -108,60 +138,16 @@ type
     procedure MouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
 
-    procedure CriarComponent(ComponentClass: TComponentClass; const AName, ACaption: string; const ALeft, ATop: Integer);
-
-    procedure SB_NomeClick(Sender: TObject);
-    procedure SB_CodProdClick(Sender: TObject);
-    procedure Sb_VistaClick(Sender: TObject);
-    procedure Sb_PrazoClick(Sender: TObject);
-    procedure SB_CodBarrasClick(Sender: TObject);
-
-    procedure Edit_AltBandKeyPress(Sender: TObject; var Key: Char);
-    procedure Edit_LargBandKeyPress(Sender: TObject; var Key: Char);
-
     procedure CriarEtiqueta;
-    procedure Fonte(Sender: TObject);
-    procedure repClick(Sender : TObject);
-    procedure FonteChange(Sender : TObject);
-    procedure CriarGtin;
-
-    procedure SB_BarrasClick(Sender: TObject);
-
-    procedure imgClick(Sender: TObject);
-
-    procedure Edit_LarBarraChange(Sender: TObject);
-    procedure Edit_AltBarraChange(Sender: TObject);
-
+    procedure BandClick(Sender : TObject);
     procedure RedimensionaShape;
-
-    procedure AlteraFolha(Sender : TObject);
-    procedure SpinEdit2Change(Sender: TObject);
-    procedure AlteraBand(Sender : TObject);
-    procedure AlteraMargem(Sender :TObject);
-
-    procedure SpeedButton2Click(Sender: TObject);
-
+    procedure CriarGtin;
+    procedure imgClick(Sender: TObject);
     procedure Preview;
-
-    procedure SpeedButton3Click(Sender: TObject);
-
-    procedure SB_ExcluirClick(Sender: TObject);
-
-    procedure SpeedButton1Click(Sender: TObject);
-
-    procedure SB_zoomClick(Sender: TObject);
-    procedure sb_zoomoutClick(Sender: TObject);
-
-    function ReportToJson : String;
-  private
-    { Private declarations }
-    Rep  : TQuickRep;
-    Band : TBand;
-    Shape : TShape;
-    FSelectedControl : TControl;
-    img : TImage;
+    procedure CriarComponent(ComponentClass: TComponentClass; const AName, ACaption: string; const ALeft, ATop: Integer);
+    procedure Fonte(Sender: TObject);
+    procedure ReportToJson;
   public
-    { Public declarations }
     FDragging: Boolean;
     FOffsetX: Integer;
     FOffsetY: Integer;
@@ -169,56 +155,71 @@ type
     FResizing: Boolean;
     FResizeDirection: TCursor;
     FStartX, FStartY: Integer;
+    { Public declarations }
   end;
 
 var
-  Form1: TForm1;
+  GtinMaker: TGtinMaker;
 
 implementation
 
 {$R *.dfm}
 
-procedure TForm1.CriarEtiqueta;
-var
-    I    : Integer;
+{ TBand }
+
+procedure TBand.Click;
 begin
-  Rep                   := TQuickRep.Create(Self);
-  Rep.Parent            := ScrollBox1;
-
-  Rep.Page.TopMargin    := sEdit_Top.Value;
-  Rep.Page.BottomMargin := sEdit_bot.Value;
-  Rep.Page.LeftMargin   := sEdit_esq.Value;
-  Rep.Page.RightMargin  := sEdit_dir.Value;
-  Rep.Page.Width        := StrToFloat(Edit_LargPag.Text);
-  Rep.Page.Length       := StrToFloat(Edit_AltPag.Text);
-  Rep.Page.Columns      := SpinEdit2.Value;
-
-  Band                  := TBand.Create(Self);
-  Band.OnClickRep       := RepClick;
-  Band.Parent           := Rep;
-  Band.BandType         := rbDetail;
-  Band.Size.Width       := StrToFloat(Edit_LargBand.Text);
-  Band.Size.Height      := StrToFloat(Edit_AltBand.Text);
+  inherited;
+  if Assigned(FOnClick) then
+    FOnclick(Self);
 end;
 
-
-procedure TForm1.CriarGtin;
-var BarCode : TBarcode1D_CODE128;
+constructor TBand.Create(AOwner: TComponent);
 begin
-  Barcode         := TBarcode1D_CODE128.Create(nil);
-  img             := TImage.Create(nil);
-  img.Parent      := Band;
-
-  img.OnMouseDown := MouseDown;
-  img.ONMouseUp   := MouseUp;
-  img.ONMouseMove := MouseMove;
-  img.OnClick     := imgClick;
-
-  Barcode.Image   := img;
-  Barcode.Barcode := '07899949602924';
+  inherited Create(Owner);
 end;
 
-procedure TForm1.AlteraBand(Sender: TObject);
+{ TLabelRep }
+
+procedure TLabelRep.Click;
+begin
+  inherited;
+  if Assigned(FOnClick) then
+    FOnclick(Self);
+end;
+
+constructor TLabelRep.Create(AOwner: TComponent);
+begin
+  inherited;
+
+end;
+
+procedure TLabelRep.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
+  Y: Integer);
+begin
+  inherited;
+  if Assigned(FOnMouseDown) then
+    FOnMouseDown(Self, Button, Shift, X, Y);
+end;
+
+procedure TLabelRep.MouseMove(Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  if Assigned(FOnMouseMove) then
+    FOnMouseMove(Self, Shift, X, Y);
+end;
+
+procedure TLabelRep.MouseUp(Button: TMouseButton; Shift: TShiftState; X,
+  Y: Integer);
+begin
+  inherited;
+  if Assigned(FOnMouseUp) then
+    FOnMouseUp(Self, Button, Shift, X, Y);
+end;
+
+{ TForm2 }
+
+procedure TGtinMaker.AlteraBand(Sender: TObject);
 begin
   if Band <> nil then
     begin
@@ -230,19 +231,21 @@ begin
     end;
 end;
 
-procedure TForm1.AlteraFolha(Sender : TObject);
+procedure TGtinMaker.AlteraFolha(Sender: TObject);
 begin
   if Rep <> nil then
     begin
       if Edit_LargPag.Text <> '' then
-        Rep.Page.Width  := StrToFloat(Edit_LargPag.Text);
+        Rep.Page.Width  := Edit_LargPag.Value;
 
       if Edit_AltPag.Text <> '' then
-        Rep.Page.Length := StrToFloat(Edit_AltPag.Text);
+        Rep.Page.Length := Edit_AltPag.Value;
+
+        Rep.Page.Columns := SpinEdit2.Value;
     end;
 end;
 
-procedure TForm1.AlteraMargem(Sender: TObject);
+procedure TGtinMaker.AlteraMargem(Sender: TObject);
 begin
   if Rep <> nil then
     begin
@@ -253,7 +256,15 @@ begin
     end;
 end;
 
-procedure TForm1.CriarComponent(ComponentClass: TComponentClass; const AName, ACaption: string; const ALeft, ATop: Integer);
+procedure TGtinMaker.BandClick(Sender: TObject);
+begin
+  FSelectedControl := nil;
+  if Shape <> nil then
+    FreeAndNil(Shape);
+end;
+
+procedure TGtinMaker.CriarComponent(ComponentClass: TComponentClass; const AName,
+  ACaption: string; const ALeft, ATop: Integer);
 var Component : TComponent;
     CaptionProp: PPropInfo;
 begin
@@ -283,13 +294,47 @@ begin
   end;
 end;
 
-procedure TForm1.Edit_AltBandKeyPress(Sender: TObject; var Key: Char);
+procedure TGtinMaker.CriarEtiqueta;
 begin
-  if not (Key in ['0'..'9', #8]) then
-    key := #0;
+  Rep                   := TQuickRep.Create(Self);
+  Rep.Parent            := ScrollBox1;
+
+  Rep.Page.TopMargin    := sEdit_Top.Value;
+  Rep.Page.BottomMargin := sEdit_bot.Value;
+  Rep.Page.LeftMargin   := sEdit_esq.Value;
+  Rep.Page.RightMargin  := sEdit_dir.Value;
+  Rep.Page.Width        := Edit_LargPag.Value;
+  Rep.Page.Length       := Edit_AltPag.Value;
+  Rep.Page.Columns      := SpinEdit2.Value;
+
+  Band                  := TBand.Create(Self);
+  Band.OnClickRep       := BandClick;
+  Band.Parent           := Rep;
+  Band.BandType         := rbDetail;
+  Band.Size.Width       := Edit_LargBand.Value;
+  Band.Size.Height      := Edit_AltBand.Value;
 end;
 
-procedure TForm1.Edit_AltBarraChange(Sender: TObject);
+procedure TGtinMaker.CriarGtin;
+var BarCode : TBarcode1D_CODE128;
+begin
+  Barcode         := TBarcode1D_CODE128.Create(nil);
+  img             := TImage.Create(nil);
+  img.Parent      := Band;
+  Img.Name        := 'img_barra';
+
+  img.height      := 30;
+  img.width       := 100;
+  img.OnMouseDown := MouseDown;
+  img.ONMouseUp   := MouseUp;
+  img.ONMouseMove := MouseMove;
+  img.OnClick     := imgClick;
+
+  Barcode.Image   := img;
+  Barcode.Barcode := '07899949602924';
+end;
+
+procedure TGtinMaker.Edit_AltBarraChange(Sender: TObject);
 begin
   if Edit_AltBarra.Text <> '' then
     FSelectedControl.Height := StrToInt(Edit_AltBarra.Text);
@@ -297,7 +342,17 @@ begin
   RedimensionaShape
 end;
 
-procedure TForm1.Edit_LarBarraChange(Sender: TObject);
+procedure TGtinMaker.Edit_CaptionChange(Sender: TObject);
+begin
+  if FSelectedControl <> nil then
+    if FSelectedControl is TQRLabel then
+      begin
+        TQRLabel(FSelectedControl).Caption := Edit_Caption.Text;
+        RedimensionaShape;
+      end;
+end;
+
+procedure TGtinMaker.Edit_LarBarraChange(Sender: TObject);
 begin
   if Edit_larBarra.Text <> '' then
     FSelectedControl.Width := StrToInt(Edit_larBarra.Text);
@@ -305,13 +360,16 @@ begin
   RedimensionaShape;
 end;
 
-procedure TForm1.Edit_LargBandKeyPress(Sender: TObject; var Key: Char);
+procedure TGtinMaker.Edit_NameChange(Sender: TObject);
 begin
-  if not (Key in ['0'..'9', #8]) then
-    key := #0;
+  try
+    if FSelectedControl <> nil then
+      FSelectedControl.Name := Edit_Name.Text;
+  except
+  end;
 end;
 
-procedure TForm1.Fonte(Sender: TObject);
+procedure TGtinMaker.Fonte(Sender: TObject);
 var FontName : String;
     I : Integer;
 begin
@@ -339,8 +397,7 @@ begin
   CB_Style.OnChange := FonteChange;
 end;
 
-procedure TForm1.FonteChange(Sender: TObject);
-var I : Integer;
+procedure TGtinMaker.FonteChange(Sender: TObject);
 begin
   if Band = nil then Exit;
 
@@ -361,7 +418,7 @@ begin
   RedimensionaShape;
 end;
 
-procedure TForm1.imgClick(Sender: TObject);
+procedure TGtinMaker.imgClick(Sender: TObject);
 begin
   Pn_CodBarra.Visible    := True;
 
@@ -375,10 +432,9 @@ begin
   Edit_LarBarra.OnChange := Edit_LarBarraChange;
 end;
 
-procedure TForm1.MouseDown(Sender: TObject; Button: TMouseButton;
+procedure TGtinMaker.MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  // Inicia o arraste ao pressionar o botão do mouse
   if Button = mbLeft then
   begin
     FDragging := True;
@@ -389,6 +445,7 @@ begin
     // Pega o Controle
     FSelectedControl := nil;
     FSelectedControl := (Sender as TControl);
+    Edit_Name.Text   := FSelectedControl.Name;
 
     if Shape <> nil then
       FreeAndNil(Shape); // Remove a seleção anterior
@@ -413,7 +470,7 @@ begin
   end;
 end;
 
-procedure TForm1.MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+procedure TGtinMaker.MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   if FDragging then
   begin
@@ -430,7 +487,7 @@ begin
   end;
 end;
 
-procedure TForm1.MouseUp(Sender: TObject; Button: TMouseButton;
+procedure TGtinMaker.MouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   // Encerra o arraste ao soltar o botão do mouse
@@ -441,33 +498,38 @@ begin
   end;
 end;
 
-procedure TForm1.Preview;
+procedure TGtinMaker.Preview;
 var img2    : TQRImage;
     Barcode : TBarcode1D_CODE128;
 begin
   if Rep = nil then Exit;
 
-  try
-    Barcode         := TBarcode1D_CODE128.Create(nil);
-    img2            := TQRImage.Create(nil);
+  if Img <> nil then
+    begin
+      try
+        Barcode         := TBarcode1D_CODE128.Create(nil);
+        img2            := TQRImage.Create(nil);
 
-    img2.Top        := img.Top;
-    Img2.Left       := img.Left;
-    img2.Height     := img.Height;
-    img2.width      := img.width;
+        img2.Top        := img.Top;
+        Img2.Left       := img.Left;
+        img2.Height     := img.Height;
+        img2.width      := img.width;
 
-    img2.Parent     := Band;
+        img2.Parent     := Band;
 
-    Barcode.Image   := img2;
-    Barcode.Barcode := '07899949602924';
+        Barcode.Image   := img2;
+        Barcode.Barcode := '07899949602924';
 
+        Rep.Preview;
+      finally
+        FreeAndNil(Img2);
+      end;
+    end
+  else
     Rep.Preview;
-  finally
-//    FreeAndNil(Img2);
-  end;
 end;
 
-procedure TForm1.RedimensionaShape;
+procedure TGtinMaker.RedimensionaShape;
 var  NewWidth,
      NewHeight : Integer;
 begin
@@ -482,15 +544,7 @@ begin
     end;
 end;
 
-procedure TForm1.repClick(Sender: TObject);
-var I : Integer;
-begin
-  FSelectedControl := nil;
-  if Shape <> nil then
-    FreeAndNil(Shape);
-end;
-
-function TForm1.ReportToJson: String;
+procedure TGtinMaker.ReportToJson;
 var
   JSON : TJSONObject;
   JSONComponents: TJSONArray;
@@ -503,10 +557,17 @@ begin
     JSON := TJSONObject.Create;
     JSONComponents := TJSONArray.Create;
 
+    // SQL Pesqusia
+    JSONComponent := TJSONObject.Create;
+    JSONComponent.AddPair('ClassName', 'TIBQuery');
+    JSONComponent.AddPair('Name', 'SQL_Pesquisa');
+    JSONComponents.AddElement(JSONComponent);
+
     // Infos do Relatorio
     JSONComponent := TJSONObject.Create;
     JSONComponent.AddPair('ClassName', 'TQuickRep');
     JSONComponent.AddPair('Name', 'Rep');
+    JSONComponent.AddPair('Dataset', 'SQL_Pesquisa');
     JSONComponent.AddPair('Page.TopMargin', sEdit_Top.Text);
     JSONComponent.AddPair('Page.BottomMargin', sEdit_bot.Text);
     JSONComponent.AddPair('Page.LeftMargin', sEdit_esq.Text);
@@ -532,63 +593,52 @@ begin
         Component := Band.Controls[I];
         if Assigned(Component) then
         begin
-          JSONComponent := TJSONObject.Create;
-
           if Component is TQRLabel then
           begin
+            JSONComponent := TJSONObject.Create;
             JSONComponent.AddPair('ClassName', 'TQRDBText');
             JSONComponent.AddPair('Parent', 'Band');
             JSONComponent.AddPair('Left', IntToStr((Component as TControl).Left));
             JSONComponent.AddPair('Top', IntToStr((Component as TControl).Top));
+            JSONComponent.AddPair('Dataset', 'SQL_Pesquisa');
             JSONComponent.AddPair('DataField', Component.Name);
 
             // Fonte
             JSONComponent.AddPair('Font.Color', IntToStr((Component as TQRLabel).Font.Color));
             JSONComponent.AddPair('Font.Size', IntToStr((Component as TQRLabel).Font.Size));
-
             JSONComponents.AddElement(JSONComponent);
           end;
 
           if Component is TImage then
           begin
+            JSONComponent := TJSONObject.Create;
             JSONComponent.AddPair('ClassName', 'TQRImage');
             JSONComponent.AddPair('Parent', 'Band');
+            JSONComponent.AddPair('Name', (Component as TControl).Name);
             JSONComponent.AddPair('Left', IntToStr((Component as TControl).Left));
             JSONComponent.AddPair('Top', IntToStr((Component as TControl).Top));
             JSONComponent.AddPair('Width', IntToStr((Component as TControl).Width));
             JSONComponent.AddPair('Height', IntToStr((Component as TControl).Height));
+            JSONComponents.AddElement(JSONComponent);
 
+            JSONComponent := TJSONObject.Create;
+            JSONComponent.AddPair('ClassName', 'TBarcode1D_CODE128');
+            JSONComponent.AddPair('Image', (Component as TControl).Name);
             JSONComponents.AddElement(JSONComponent);
           end;
         end;
       end;
     end;
 
-
     // Serializando o JSON para uma string antes de liberar
     Json.AddPair('Components',JsonComponents);
-    Result := Json.ToString;
+//    Memo1.Lines.Add(Json.ToString);
   finally
     Json.Free;
   end;
 end;
 
-procedure TForm1.SB_BarrasClick(Sender: TObject);
-begin
-  CriarGtin;
-end;
-
-procedure TForm1.SB_CodBarrasClick(Sender: TObject);
-begin
-  CriarComponent(TQRLabel,'COD_BARRA', '12345678910111213',10,10);
-end;
-
-procedure TForm1.SB_CodProdClick(Sender: TObject);
-begin
-  CriarComponent(TQRLabel,'COD_PROD', '000001',10,20);
-end;
-
-procedure TForm1.SB_ExcluirClick(Sender: TObject);
+procedure TGtinMaker.SB_ExcluirClick(Sender: TObject);
 begin
   if FSelectedControl <> nil then
     begin
@@ -597,111 +647,60 @@ begin
     end;
 end;
 
-procedure TForm1.SB_NomeClick(Sender: TObject);
+procedure TGtinMaker.SB_NomeClick(Sender: TObject);
 begin
   CriarComponent(TQRLabel,'NOME_PROD', 'NOME DO PRODUTO',10,30);
 end;
 
-procedure TForm1.Sb_PrazoClick(Sender: TObject);
+procedure TGtinMaker.Sb_PrazoClick(Sender: TObject);
 begin
-  CriarComponent(TQRLabel,'VLR_PRAZO', 'R$ 00.00 P',10,40);
+  CriarComponent(TQRLabel,'VLR_PRAZO', 'R$ 0.00P',10,40);
 end;
 
-procedure TForm1.Sb_VistaClick(Sender: TObject);
+procedure TGtinMaker.SB_PreviewClick(Sender: TObject);
 begin
-  CriarComponent(TQRLabel,'VLR_VISTA', 'R$ 00.00 V',10,50);
+  Preview;
 end;
 
-procedure TForm1.SB_zoomClick(Sender: TObject);
-const
-  ZoomFactor = 1.1; // Aumenta 10%
+procedure TGtinMaker.Sb_VistaClick(Sender: TObject);
 begin
-  Rep.Width  := Round(Rep.Width * ZoomFactor);
-  Rep.Height := Round(Rep.Height * ZoomFactor);
+  CriarComponent(TQRLabel,'VLR_VISTA', 'R$ 0.00V',10,30);
 end;
 
-procedure TForm1.sb_zoomoutClick(Sender: TObject);
-const
-  ZoomFactor = 0.9; // Aumenta 10%
+procedure TGtinMaker.SpeedButton1Click(Sender: TObject);
 begin
-  Rep.Width := Round(Rep.Width * ZoomFactor);
-  Rep.Height := Round(Rep.Height * ZoomFactor);
+  CriarComponent(TQRLabel,'', 'CAMPO',10,30);
 end;
 
-procedure TForm1.SpeedButton1Click(Sender: TObject);
+procedure TGtinMaker.SpeedButton2Click(Sender: TObject);
 begin
-  CriarComponent(TQRLabel,'FANTASIA', 'NOME_EMPRESA',10,60);
+  ReportToJson;
 end;
 
-procedure TForm1.SpeedButton2Click(Sender: TObject);
+procedure TGtinMaker.SB_BarrasClick(Sender: TObject);
+begin
+  CriarGtin;
+end;
+
+procedure TGtinMaker.SB_CodBarrasClick(Sender: TObject);
+begin
+  CriarComponent(TQRLabel,'COD_BARRA', '123456789123456',10,50);
+end;
+
+procedure TGtinMaker.SB_CodProdClick(Sender: TObject);
+begin
+  CriarComponent(TQRLabel,'COD_PROD', '000001',10,20);
+end;
+
+procedure TGtinMaker.SB_CriarClick(Sender: TObject);
 begin
   CriarEtiqueta;
-  SpeedButton2.Enabled := False;
+  SB_Criar.Enabled := False;
 end;
 
-procedure TForm1.SpeedButton3Click(Sender: TObject);
-var JsonReport: TJSONObject;
-    Str : String;
+procedure TGtinMaker.Sb_EmpresaClick(Sender: TObject);
 begin
-//  Preview;
-  Memo1.Lines.Add(ReportToJson);
-end;
-
-procedure TForm1.SpinEdit2Change(Sender: TObject);
-begin
-  if Rep <> Nil then
-    Rep.Page.Columns := SpinEdit2.Value;
-end;
-
-{ TLabelRep }
-
-procedure TLabelRep.Click;
-begin
-  inherited;
-  if Assigned(FOnClick) then
-    FOnclick(Self);
-end;
-
-constructor TLabelRep.Create(AOwner: TComponent);
-begin
-  inherited;
-end;
-
-procedure TLabelRep.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
-  Y: Integer);
-begin
-  inherited;
-  if Assigned(FOnMouseDown) then
-    FOnMouseDown(Self, Button, Shift, X, Y);
-end;
-
-procedure TLabelRep.MouseMove(Shift: TShiftState; X, Y: Integer);
-begin
-  inherited;
-  if Assigned(FOnMouseMove) then
-    FOnMouseMove(Self, Shift, X, Y);
-end;
-
-procedure TLabelRep.MouseUp(Button: TMouseButton; Shift: TShiftState; X,
-  Y: Integer);
-begin
-  inherited;
-   if Assigned(FOnMouseUp) then
-    FOnMouseUp(Self, Button, Shift, X, Y);
-end;
-
-{ TRep }
-
-constructor TBand.Create(AOwner: TComponent);
-begin
-  inherited Create(Owner);
-end;
-
-procedure TBand.Click;
-begin
-  inherited;
-  if Assigned(FOnClick) then
-    FOnclick(Self);
+  CriarComponent(TQRLabel,'FANTASIA', 'EMPRESA',10,60);
 end;
 
 end.
